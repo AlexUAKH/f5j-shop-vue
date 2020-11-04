@@ -6,7 +6,9 @@ export default {
   state: () => ({
     isMobile: false,
     isDesktop: true,
-    categories: []
+    categories: [],
+    loading: false,
+    error: null
   }),
   mutations,
   actions,

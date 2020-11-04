@@ -1,10 +1,19 @@
 export default {
-  SWITCH_TO_DESKTOP: state => {
+  switchToDesktop: state => {
     state.isDesktop = true;
     state.isMobile = false;
   },
-  SWITCH_TO_MOBILE: state => {
+  switchToMobile: state => {
     state.isMobile = true;
     state.isDesktop = false;
+  },
+  setLoading: (state, payload) => {
+    state.loading = payload;
+  },
+  setError: (state, payload) => {
+    state.error = payload;
+  },
+  clearError: (state) => {
+    state.error = null;
   }
 };

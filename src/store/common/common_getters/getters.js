@@ -4,5 +4,11 @@ export default {
   },
   IS_DESKTOP(state) {
     return state.isDesktop;
+  },
+  IS_LOADING(state) {
+    return state.loading;
+  },
+  IS_ERROR(state) {
+    return state.error;
   }
 }

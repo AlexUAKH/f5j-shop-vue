@@ -1,8 +1,17 @@
 export default {
   SET_DESKTOP({ commit }) {
-    commit("SWITCH_TO_DESKTOP");
+    commit("switchToDesktop");
   },
   SET_MOBILE({ commit }) {
-    commit("SWITCH_TO_MOBILE");
+    commit("switchToMobile");
+  },
+  setLoading({ commit }, payload) {
+    commit("setLoading", payload);
+  },
+  setError({ commit }, payload) {
+    commit("setError", payload);
+  },
+  clearError({ commit }) {
+    commit("clearError");
   }
 };

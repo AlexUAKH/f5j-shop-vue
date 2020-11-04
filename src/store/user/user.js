@@ -1,6 +1,6 @@
-import actions from "./actions/actions";
-import mutations from "./mutations/mutations";
-import getters from "./getters/getters";
+import actions from "./user_actions/actions";
+import mutations from "./user_mutations/mutations";
+import getters from "./user_getters/getters";
 
 export default {
   state: () => ({

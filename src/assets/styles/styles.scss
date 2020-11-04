@@ -10,6 +10,18 @@ ul {
 a {
   text-decoration: none;
 }
+input {
+  height: 30px;
+  margin: 5px auto;
+  padding: 5px 5px 5px 10px;
+  font-size: 1.2rem;
+  background-color: #eaeaea;
+  border: #000 solid 1px;
+  border-radius: 5px;
+  &.error {
+    border-color: $errorColor;
+  }
+}
 .btn {
   padding: $padding $padding*2;
   background: $green-bg;
@@ -20,5 +32,9 @@ a {
   cursor: pointer;
   &:hover {
     background: $green-bg-hover;
+  }
+  &:disabled {
+    cursor: default;
+    background-color: gray;
   }
 }

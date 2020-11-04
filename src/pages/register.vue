@@ -2,20 +2,20 @@
   <div class="register">
     <div class="formContainer">
       <h1>Sign Up</h1>
-      <form @action.prevent="">
+      <form @submit.prevent="submit">
         <div class="form__item" :class="{ errorItem: $v.email.$error }">
           <label for="email" class="form__label">Email</label>
           <input
             id="email"
             type="email"
             placeholder="email"
-            class="form__input"
             :class="{ error: $v.email.$error }"
-            :value="email"
-            @change="setEmail($event.target.value)"
+            v-model.trim="$v.email.$model"
+            @change="$v.email.$touch()"
+            @blur="$v.email.$touch()"
           />
           <div class="error" v-if="!$v.email.required">
-            Email can't be empty
+            Field can't be empty
           </div>
           <div class="error" v-if="!$v.email.email">Enter valid email</div>
         </div>
@@ -25,25 +25,62 @@
             id="password"
             type="password"
             placeholder="password"
-            class="form__input"
+            autocomplete="true"
             :class="{ error: $v.password.$error }"
-            :value="password"
-            @change="setPassword($event.target.value)"
+            v-model.trim="$v.password.$model"
+            @change="$v.password.$touch()"
+            @blur="$v.password.$touch()"
           />
           <div class="error" v-if="!$v.password.required">
-            Password can't be empty
+            Field can't be empty
           </div>
-          <div class="error" v-if="!$v.password.email">
+          <div class="error" v-if="!$v.password.minLength">
             Enter valid password
           </div>
         </div>
+        <div
+          class="form__item"
+          :class="{ errorItem: $v.repeatPassword.$error }"
+        >
+          <label for="repeatPassword" class="form__label"
+            >Repeat password</label
+          >
+          <input
+            id="repeatPassword"
+            type="password"
+            placeholder="Repeat your password"
+            autocomplete="false"
+            :class="{ error: $v.repeatPassword.$error }"
+            v-model.trim="$v.repeatPassword.$model"
+            @change="$v.password.$touch()"
+            @blur="$v.email.$touch()"
+          />
+          <div class="error" v-if="!$v.repeatPassword.required">
+            Field can't be empty
+          </div>
+          <div class="error" v-if="!$v.repeatPassword.sameAsPassword">
+            Passwords must be identical.
+          </div>
+        </div>
+        <button
+          class="btn submitBtn"
+          type="submit"
+          :disabled="submitStatus === 'PENDING' || $v.$invalid"
+        >
+          CREATE ACCOUNT
+        </button>
+        <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
+        <p class="have_account">
+          Already have an account?
+          <router-link to="/login">Login</router-link>
+        </p>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import { required, email } from "vuelidate/lib/validators";
+import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
 
 export default {
   name: "register",
@@ -52,7 +89,8 @@ export default {
     return {
       email: "",
       password: "",
-      repeatePassword: ""
+      repeatPassword: "",
+      submitStatus: ""
     };
   },
   validations: {
@@ -61,18 +99,34 @@ export default {
       email
     },
     password: {
-      required
+      required,
+      minLength: minLength(6)
+    },
+    repeatPassword: {
+      required,
+      sameAsPassword: sameAs("password")
     }
   },
-  computed: {},
   methods: {
-    setEmail(email) {
-      this.email = email;
-      this.$v.email.$touch();
-    },
-    setPassword(password) {
-      this.password = password;
-      this.$v.password.$touch();
+    submit() {
+      const user = {
+        email: this.email,
+        password: this.password
+      };
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.submitStatus = "ERROR";
+      } else {
+        this.submitStatus = "PENDING";
+        this.$store
+          .dispatch("registerUser", user)
+          .then(() => {
+            this.$router.push("/");
+          })
+          .catch(() => {
+            this.submitStatus = "ERROR";
+          });
+      }
     }
   }
 };
@@ -103,21 +157,25 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: start;
+  margin-bottom: 15px;
   & :not(input) {
     margin-left: 5%;
   }
   & input {
     width: 90%;
-    height: 30px;
-    margin: 5px auto;
-    padding: 5px;
-    font-size: 1.2rem;
-    &.error {
-      border-color: $errorColor;
-    }
+  }
+  .error {
+    display: none;
   }
 }
 .errorItem {
   color: $errorColor;
+  .error {
+    display: block;
+  }
+}
+.submitBtn {
+  width: 60%;
+  height: 40px;
 }
 </style>

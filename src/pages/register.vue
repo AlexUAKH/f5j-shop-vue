@@ -123,8 +123,9 @@ export default {
           .then(() => {
             this.$router.push("/");
           })
-          .catch(() => {
+          .catch((error) => {
             this.submitStatus = "ERROR";
+            console.log("error: ", error);
           });
       }
     }
@@ -134,48 +135,5 @@ export default {
 
 <style lang="scss">
 .register {
-  width: 100%;
-  height: 100%;
-  margin-top: $header-height;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.formContainer {
-  width: 95%;
-  max-width: 500px;
-  height: fit-content;
-  border: darkgrey solid 2px;
-  border-radius: 10px;
-
-  & h1 {
-    font-size: 1.6rem;
-  }
-}
-.form__item {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  margin-bottom: 15px;
-  & :not(input) {
-    margin-left: 5%;
-  }
-  & input {
-    width: 90%;
-  }
-  .error {
-    display: none;
-  }
-}
-.errorItem {
-  color: $errorColor;
-  .error {
-    display: block;
-  }
-}
-.submitBtn {
-  width: 60%;
-  height: 40px;
 }
 </style>

@@ -1,48 +1,37 @@
 <template>
-  <div class="v-footer">
-    <div class="v-footer__copyright">
-      © 2020 design by
-      <a
-        href="https://www.linkedin.com/in/oleksandr-loboda-017ab81b4/"
-        target="_blank"
-      >
-        AlexKHUA
-      </a>
-    </div>
-    <div class="v-footer__social_icons">
-      <i class="material-icons">mail_outline</i>
-      <i class="material-icons">email</i>
-      <i class="material-icons">alternate_email</i>
-    </div>
-  </div>
+  <v-footer dark padless>
+    <v-card class="flex" flat tile>
+      <v-card-title class="teal">
+        <strong class="subheading">
+          Contact us with social networks!
+        </strong>
+
+        <v-spacer></v-spacer>
+
+        <v-btn v-for="icon in icons" :key="icon" class="mx-4" dark icon>
+          <v-icon size="24px">
+            {{ icon }}
+          </v-icon>
+        </v-btn>
+      </v-card-title>
+
+      <v-card-text class="py-2 white--text text-center">
+        {{ new Date().getFullYear() }} — <strong>AlexKHUA</strong>
+      </v-card-text>
+    </v-card>
+  </v-footer>
 </template>
 
 <script>
 export default {
-  name: "v-footer",
-  props: {},
-  computed: {},
-  methods: {}
+  name: "m-footer",
+  data: () => ({
+    icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"]
+  })
 };
 </script>
 
 <style lang="scss">
 .v-footer {
-  background-color: $green-bg;
-  height: $footer-height;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-left: 15px;
-  padding-right: 15px;
-  align-items: center;
-  font-size: 15px;
-  a {
-    color: white;
-  }
-  &__social_icons {
-    display: flex;
-    color: white;
-  }
 }
 </style>

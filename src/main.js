@@ -1,12 +1,12 @@
 import Vue from "vue";
 import Vuelidate from "vuelidate";
+import Vuetify from "vuetify";
 
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
 
-import "material-design-icons-iconfont";
-import "@/assets/styles/styles.scss";
+import "vuetify/dist/vuetify.min.css";
 
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -15,12 +15,26 @@ import "firebase/storage";
 import "firebase/messaging";
 
 Vue.use(Vuelidate);
+Vue.use(Vuetify);
+
+const vuetify = new Vuetify({
+  theme: {
+    dark: true,
+    options: {
+      themeCache: {
+        get: key => localStorage.getItem(key),
+        set: (key, value) => localStorage.setItem(key, value)
+      }
+    }
+  }
+});
 
 Vue.config.productionTip = false;
 
 new Vue({
   router,
   store,
+  vuetify,
   created() {
     const firebaseConfig = {
       apiKey: "AIzaSyBSfqnT13EVSS6R_JTr_5yS_GZ7QOpQI-k",

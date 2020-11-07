@@ -1,7 +1,7 @@
 <template>
-  <div class="v-main-layout">
-    <v-header @openDrawer="openDrawer"/>
-    <v-main>
+  <v-sheet class="d-flex flex-column" height="100vh">
+    <v-header @openDrawer="openDrawer" />
+    <v-main class="" height="100%">
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="font-weight-bold">
@@ -41,7 +41,7 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-  </div>
+  </v-sheet>
 </template>
 
 <script>

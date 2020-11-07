@@ -1,4 +1,7 @@
 export default {
+  getTheme(state) {
+    return state.theme;
+  },
   IS_MOBILE(state) {
     return state.isMobile;
   },
@@ -11,4 +14,4 @@ export default {
   IS_ERROR(state) {
     return state.error;
   }
-}
+};

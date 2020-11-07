@@ -1,50 +1,72 @@
 <template>
   <div class="v-main-layout">
-    <v-card class="overflow-hidden">
-      <v-app-bar
-        absolute
-        elevate-on-scroll
-        scroll-target="#scrolling-techniques-7"
-      >
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-        <v-toolbar-title>Title</v-toolbar-title>
-
-        <v-spacer></v-spacer>
-
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
-      </v-app-bar>
-      <v-main
-        id="scrolling-techniques-7"
-        class="overflow-y-auto mt-14"
-      >
-        <v-container tag="main" style="height: 100%;">
-          <keep-alive>
-            <router-view class="v-main-layout__pages" />
-          </keep-alive>
-        </v-container>
-      </v-main>
-    </v-card>
+    <v-header @openDrawer="openDrawer"/>
+    <v-main>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="font-weight-bold">
+            Dark Mode
+          </v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action
+          ><v-switch v-model="$vuetify.theme.dark" />
+        </v-list-item-action>
+      </v-list-item>
+      <keep-alive>
+        <router-view />
+      </keep-alive>
+    </v-main>
     <MFooter />
+    <v-navigation-drawer v-model="drawer" absolute temporary>
+      <v-list nav dense>
+        <v-list-item-group
+          v-model="group"
+          active-class="deep-purple--text text--accent-4"
+        >
+          <v-list-item>
+            <v-list-item-title>Foo</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-title>Bar</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-title>Fizz</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-title>Buzz</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
   </div>
 </template>
 
 <script>
+import MFooter from "../components/footer/v-footer";
+import VHeader from "../components/header/v-header";
 
-import MFooter from "../components/footer/v-footer"
 export default {
   name: "v-main-layout",
-  components: { MFooter }
+  components: { VHeader, MFooter },
+  data() {
+    return {
+      drawer: false,
+      group: null
+    };
+  },
+  methods: {
+    openDrawer() {
+      this.drawer = !this.drawer;
+    }
+  },
+  watch: {
+    group() {
+      this.drawer = false;
+    }
+  }
 };
 </script>
 

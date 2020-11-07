@@ -123,7 +123,7 @@ export default {
           .then(() => {
             this.$router.push("/");
           })
-          .catch((error) => {
+          .catch(error => {
             this.submitStatus = "ERROR";
             console.log("error: ", error);
           });

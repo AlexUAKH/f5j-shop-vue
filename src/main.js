@@ -19,7 +19,7 @@ Vue.use(Vuetify);
 
 const vuetify = new Vuetify({
   theme: {
-    dark: true,
+    light: true,
     options: {
       themeCache: {
         get: key => localStorage.getItem(key),

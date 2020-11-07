@@ -4,6 +4,7 @@ import getters from "./common_getters/getters";
 
 export default {
   state: () => ({
+    theme: "dark",
     isMobile: false,
     isDesktop: true,
     categories: [],

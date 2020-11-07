@@ -5,6 +5,9 @@ export default {
   SET_MOBILE({ commit }) {
     commit("switchToMobile");
   },
+  changeTheme({ commit }) {
+    commit("changeTheme");
+  },
   setLoading({ commit }, payload) {
     commit("setLoading", payload);
   },

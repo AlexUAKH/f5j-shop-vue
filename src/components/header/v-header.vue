@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar max-height="56px" app>
+  <v-app-bar app>
     <v-app-bar-nav-icon
       @click.stop="$emit('openDrawer')"
       class="hidden-md-and-up"

@@ -4,7 +4,7 @@ import getters from "./user_getters/getters";
 
 export default {
   state: () => ({
-    user: null
+    user: { i: "ll" }
   }),
   mutations,
   actions,

@@ -2,19 +2,11 @@
   <v-sheet class="d-flex flex-column" height="100vh">
     <v-header @openDrawer="openDrawer" />
     <v-main class="" height="100%">
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="font-weight-bold">
-            Dark Mode
-          </v-list-item-title>
-        </v-list-item-content>
-        <v-list-item-action
-          ><v-switch v-model="$vuetify.theme.dark" />
-        </v-list-item-action>
-      </v-list-item>
-      <keep-alive>
-        <router-view />
-      </keep-alive>
+      <v-container>
+        <keep-alive>
+          <router-view />
+        </keep-alive>
+      </v-container>
     </v-main>
     <MFooter />
     <v-navigation-drawer v-model="drawer" absolute temporary>
@@ -56,6 +48,9 @@ export default {
       drawer: false,
       group: null
     };
+  },
+  mounted() {
+    this.$store.dispatch("fetchCategories");
   },
   methods: {
     openDrawer() {

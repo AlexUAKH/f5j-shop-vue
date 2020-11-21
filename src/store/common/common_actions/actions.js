@@ -1,12 +1,9 @@
 export default {
-  SET_DESKTOP({ commit }) {
-    commit("switchToDesktop");
-  },
-  SET_MOBILE({ commit }) {
-    commit("switchToMobile");
-  },
   changeTheme({ commit }) {
     commit("changeTheme");
+  },
+  fetchCategories({ commit }) {
+    commit("setCategoriesToState", "k0bk");
   },
   setLoading({ commit }, payload) {
     commit("setLoading", payload);

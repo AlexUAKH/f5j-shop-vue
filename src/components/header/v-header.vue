@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar max-height="56px">
+  <v-app-bar max-height="56px" app>
     <v-app-bar-nav-icon
       @click.stop="$emit('openDrawer')"
       class="hidden-md-and-up"
@@ -35,30 +35,101 @@
       <v-divider vertical></v-divider>
     </v-toolbar-items>
 
-    <v-btn v-if="checkUser" icon class="mx-1">
-      <v-icon> mdi-account-circle-outline</v-icon>
-      userName
-    </v-btn>
-    <v-btn v-if="!checkUser" icon class="mx-1" @click="$router.push('login')">
-      <v-icon> mdi-login</v-icon>
-    </v-btn>
+    <v-tooltip bottom v-if="!checkUser">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          icon
+          class="mx-1"
+          v-bind="attrs"
+          v-on="on"
+          @click="$router.push('login')"
+        >
+          <v-icon>mdi-login</v-icon>
+        </v-btn>
+      </template>
+      <span>Login to your account</span>
+    </v-tooltip>
 
-    <v-btn icon class="mx-1">
-      <v-badge
-        overlap
-        :content="getItemOnCartCount"
-        :value="getItemOnCartCount"
-      >
-        <v-icon v-if="!getItemOnCartCount">mdi-cart-outline</v-icon>
-        <v-icon v-if="getItemOnCartCount">mdi-cart</v-icon>
-      </v-badge>
-    </v-btn>
+    <v-menu v-if="checkUser" open-on-hover bottom left offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon class="mx-1" v-bind="attrs" v-on="on">
+          <v-icon>mdi-account-circle-outline</v-icon>
+        </v-btn>
+      </template>
+      <v-list nav>
+        <v-subheader>Username</v-subheader>
+        <v-divider></v-divider>
+        <v-list-item-group>
+          <router-link tag="v-list-item" to="/profile?id=ghjngtvh">
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>My account</v-list-item-title>
+            </v-list-item-content>
+          </router-link>
+          <router-link tag="v-list-item" to="/orders?id=jhyygyg">
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-text</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>My orders</v-list-item-title>
+            </v-list-item-content>
+          </router-link>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-logout</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Sign out</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-menu>
 
-    <v-btn icon>
-      <v-icon>mdi-dots-vertical</v-icon>
-    </v-btn>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          icon
+          v-bind="attrs"
+          v-on="on"
+          class="mx-1"
+        >
+          <v-badge
+            overlap
+            :content="getItemOnCartCount"
+            :value="getItemOnCartCount"
+          >
+            <v-icon v-if="!getItemOnCartCount">mdi-cart-outline</v-icon>
+            <v-icon v-else>mdi-cart</v-icon>
+          </v-badge>
+        </v-btn>
+      </template>
+      <span>Go to your cart</span>
+    </v-tooltip>
+
+    <v-menu bottom left offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon v-bind="attrs" v-on="on">
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </template>
+
+      <v-list>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="font-weight-bold">
+              Dark Mode
+            </v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-switch v-model="$vuetify.theme.dark" />
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </v-app-bar>
-
 </template>
 
 <script>

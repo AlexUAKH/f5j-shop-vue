@@ -1,6 +1,6 @@
 export default {
-  getTheme(state) {
-    return state.theme;
+  getCategories(state) {
+    return state.categories;
   },
   IS_MOBILE(state) {
     return state.isMobile;

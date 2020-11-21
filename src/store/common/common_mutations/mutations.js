@@ -1,11 +1,6 @@
 export default {
-  switchToDesktop: state => {
-    state.isDesktop = true;
-    state.isMobile = false;
-  },
-  switchToMobile: state => {
-    state.isMobile = true;
-    state.isDesktop = false;
+  setCategoriesToState: (state, categories) => {
+    state.categories = categories;
   },
   changeTheme: state => {
     state.theme = state.theme === "light" ? "dark" : "light";

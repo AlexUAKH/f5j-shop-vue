@@ -52,10 +52,18 @@ export default {
   data: () => ({
     drawer: null,
     items: [
-      { title: "Categories", icon: "md-", to: "/admin", exact: true },
-      { title: "Products", icon: "md-", to: "/admin/products" },
-      { title: "Orders", icon: "md-", to: "/admin/orders" },
-      { title: "Reviews", icon: "md-", to: "/admin/reviews" }
+      { title: "Categories", icon: "mdi-sitemap", to: "/admin", exact: true },
+      { title: "Products", icon: "mdi-airplane", to: "/admin/products" },
+      {
+        title: "Orders",
+        icon: "mdi-format-list-numbered",
+        to: "/admin/orders"
+      },
+      {
+        title: "Reviews",
+        icon: "mdi-comment-text-multiple-outline",
+        to: "/admin/reviews"
+      }
     ],
     watch: {
       group() {

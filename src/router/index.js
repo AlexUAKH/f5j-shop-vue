@@ -14,7 +14,7 @@ const routes = [
   },
   {
     path: "/admin",
-    name: "adminCategories",
+    name: "Categories",
     meta: "admin",
     component: () => import("../pages/admin-categories")
   },

@@ -1,9 +1,9 @@
 <template>
-    <component :is="layout">
-      <keep-alive>
-        <router-view />
-      </keep-alive>
-    </component>
+  <component :is="layout">
+    <keep-alive>
+      <router-view />
+    </keep-alive>
+  </component>
 </template>
 
 <script>

@@ -24,6 +24,8 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-btn @click="() => ($vuetify.theme.dark = false)">light</v-btn>
+    <v-btn @click="() => ($vuetify.theme.dark = true)">dark k</v-btn>
   </div>
 </template>
 

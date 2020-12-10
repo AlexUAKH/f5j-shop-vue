@@ -23,11 +23,11 @@
             ></v-progress-linear>
           </template>
 
-          <v-img height="250" :src="cat.img"></v-img>
+          <v-img height="250" :src="cat.img" @click="editItem(ind)"></v-img>
 
-          <v-card-title>{{ cat.title }}</v-card-title>
+          <v-card-title @click="editItem(ind)">{{ cat.title }}</v-card-title>
 
-          <v-card-text>
+          <v-card-text @click="editItem(ind)">
             <div>
               {{ cat.description }}
             </div>
@@ -45,23 +45,6 @@
             </v-btn>
           </v-card-actions>
         </v-card>
-      </v-col>
-      <v-col sm="6" lg="4" cols="12">
-        <v-hover v-slot="{ hover }">
-          <v-card @click="editItem(-1)">
-            <v-skeleton-loader
-              boilerplate
-              elevation="2"
-              type="image, article, actions"
-            >
-            </v-skeleton-loader>
-            <v-fade-transition>
-              <v-overlay v-if="hover" absolute color="#036358">
-                <v-icon size="150">mdi-plus</v-icon>
-              </v-overlay>
-            </v-fade-transition>
-          </v-card>
-        </v-hover>
       </v-col>
     </v-row>
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -137,35 +120,7 @@
 export default {
   name: "admin-categories",
   data: () => ({
-    category: [
-      {
-        title: "Alpha 2.0",
-        description:
-          "new Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, at blanditiis eius praesentium repudiandae soluta.",
-        img: "https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg"
-      },
-      {
-        title: "Alpha 2.0",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, at blanditiis eius praesentium repudiandae soluta.",
-        img:
-          "https://www.telegraph.co.uk/content/dam/Pets/spark/royal-canin/cat-close-to-screen.jpg"
-      },
-      {
-        title: "Alpha 2.0",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, at blanditiis eius praesentium repudiandae soluta.",
-        img:
-          "https://undark.org/wp-content/uploads/2020/02/GettyImages-1199242002-1-scaled.jpg"
-      },
-      {
-        title: "Alpha 2.0",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, at blanditiis eius praesentium repudiandae soluta.",
-        img:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM44430OV4S8zI71m_HHhsZRILQ73p4NjH7A&usqp=CAU"
-      }
-    ],
+    category: [],
     loading: true,
     dialog: false,
     dialogDelete: false,
@@ -192,10 +147,14 @@ export default {
     }
   },
 
-  created() {
-    setTimeout(() => {
+  async mounted() {
+    try {
+      this.category = (await this.$store.dispatch("fetchCategories")) || [];
       this.loading = false;
-    }, 2000);
+      console.log("mounted success: ", this.category);
+    } catch (e) {
+      console.log("mounted err: ", e);
+    }
   },
 
   methods: {
@@ -211,11 +170,18 @@ export default {
 
     deleteItem(item) {
       this.editedIndex = item;
-      this.editedItem = Object.assign({}, this.category[item]);
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
+    async deleteItemConfirm() {
+      try {
+        await this.$store.dispatch(
+          "deleteCategory",
+          this.category[this.editedIndex].id
+        );
+      } catch (e) {
+        console.log("err del: ", e);
+      }
       this.category.splice(this.editedIndex, 1);
       this.closeDelete();
     },
@@ -236,16 +202,35 @@ export default {
       });
     },
 
-    save() {
-      if (this.editedIndex === -1) {
-        this.editedItem.img = require("@/assets/images/no_photo.png");
+    async save() {
+      let cat = {};
+      let url = null;
+      try {
+        if (this.fileName) {
+          url = await this.$store.dispatch("uploadImg", this.fileName);
+        }
+        if (this.editedIndex === -1) {
+          this.editedItem["img"] =
+            url ||
+            "https://firebasestorage.googleapis.com/v0/b/f5jshop-vue.appspot.com/o/category%2Fno_photo.png?alt=media&token=72a9e353-c01e-48c6-93dc-2e620b3ed20d";
+          cat = await this.$store.dispatch("createCategory", this.editedItem);
+          this.category.push(cat);
+        } else {
+          if (url) {
+            this.editedItem["img"] = url;
+          }
+          cat = await this.$store.dispatch("editCategory", this.editedItem);
+          this.category[this.editedIndex].title = this.editedItem.title;
+          this.category[this.editedIndex].img = this.editedItem.img;
+          this.category[
+            this.editedIndex
+          ].description = this.editedItem.description;
+          console.log("edit");
+        }
+      } catch (e) {
+        console.log("dd: ", e);
       }
-      if (this.editedIndex > -1) {
-        Object.assign(this.category[this.editedIndex], this.editedItem);
-      } else {
-        this.category.push(this.editedItem);
-      }
-      console.log("imgURL: ", this.editedItem, this.editedIndex);
+
       this.close();
     }
   }

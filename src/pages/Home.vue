@@ -4,8 +4,8 @@
     <v-container class="grey lighten-5 mt-2">
       <v-row>
         <v-col
-          v-for="(category, n) in getCategories"
-          :key="n"
+          v-for="category in categories"
+          :key="category.id"
           cols="12"
           sm="6"
           md="4"
@@ -30,13 +30,19 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
   name: "Home",
-  components: {},
-  computed: {
-    ...mapGetters(["getCategories"])
+  data: () => ({
+    categories: []
+  }),
+  async mounted() {
+    try {
+      this.categories = (await this.$store.dispatch("fetchCategories")) || [];
+      this.loading = false;
+      console.log("mounted success: ", this.categories);
+    } catch (e) {
+      console.log("mounted err: ", e);
+    }
   }
 };
 </script>
